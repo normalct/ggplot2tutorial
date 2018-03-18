@@ -1,0 +1,89 @@
+---
+title: Introduction to ggplot2
+author: normalct
+date: '2018-03-18'
+slug: introduction-to-ggplot2
+categories:
+  - R
+tags:
+  - ggplot2
+---
+
+#### [DataCamp Youtube Link](https://youtu.be/YxKr2a-Y1WE)
+### Introduction to ggplot2
+```{r tidy=TRUE, message=FALSE, warning=FALSE}
+library(MASS)
+library(ggplot2)
+library(dplyr)
+### mammal data ###
+# head(mammals)
+```
+
+```{r}
+# first attempt to plot
+mammals %>%
+    ggplot( aes(x=body, y=brain)) +
+    geom_point() +
+    stat_smooth(method = "lm", col = "red", se = FALSE)
+
+# fine tuning:
+# The above plot shows that there are two points that might be
+# outliers that excerts huge influence.
+# We might need to use the log transformation
+
+mammals %>%
+    ggplot(aes(x=body, y=brain)) +
+    annotation_logticks() +
+    geom_point(alpha=0.6) +
+    scale_x_log10() +
+    scale_y_log10() +
+    stat_smooth(method = "lm",  col = "#C42126", se = TRUE, size=1)
+
+# Further fine tuning
+mammals %>%
+    ggplot( aes(x=body, y=brain) ) +
+    annotation_logticks() +
+    geom_point(alpha=0.6) +
+    coord_fixed(xlim = c(10^-3, 10^4), ylim = c(10^-1, 10^4)) +
+    scale_x_log10( expression("Body weight (log"["10"]*"(Kg))",
+                             breaks = trans_breaks("log10", function(x) 10^x),
+                             labels = trans_format("log10", math_format(10^.x)) )) +
+    scale_y_log10( expression("Brain weight (log"["10"]*"(Kg))",
+                   breaks = trans_breaks("log10", function(y) 10^x),
+                   labels = trans_format("log10", math_format(10^.x)) )
+    ) +
+    # stat_smooth(method = "lm", col = "#C42126", se = TRUE, size=1)
+    stat_smooth(method = "lm", col = "#C42126", se = TRUE, size=1) +
+    theme_classic()
+```
+
+
+
+```{r tidy=TRUE}
+### Anscombe data ###
+# head(anscombe)
+
+anscombe %>%
+    ggplot(aes(x=x1, y=y1)) +
+    geom_point() +
+    stat_smooth(method = "lm", col = "red", se = FALSE)
+
+anscombe %>%
+    ggplot(aes(x=x2, y=y2)) +
+    geom_point() +
+    stat_smooth(method = "lm", col = "red", se = FALSE)
+
+anscombe %>%
+    ggplot(aes(x=x3, y=y3)) +
+    geom_point() +
+    stat_smooth(method = "lm", col = "red", se = FALSE)
+
+anscombe %>%
+    ggplot(aes(x=x4, y=y4)) +
+    geom_point() +
+    stat_smooth(method = "lm", col = "red", se = FALSE)
+
+```
+
+
+
