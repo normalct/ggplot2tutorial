@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>second post - test</title>
+      <link>/2018/03/18/second-post-test/</link>
+      <pubDate>Sun, 18 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/03/18/second-post-test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Hello R Markdown</title>
       <link>/2015/07/23/hello-r-markdown/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
