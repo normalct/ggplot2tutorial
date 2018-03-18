@@ -9,8 +9,10 @@ tags:
   - ggplot2
 ---
 
-#### [DataCamp Youtube Link](https://youtu.be/YxKr2a-Y1WE)
-### Introduction to ggplot2
+# Introduction to ggplot2
+
+[DataCamp Youtube Link](https://youtu.be/YxKr2a-Y1WE)
+
 ```{r tidy=TRUE, message=FALSE, warning=FALSE}
 library(MASS)
 library(ggplot2)

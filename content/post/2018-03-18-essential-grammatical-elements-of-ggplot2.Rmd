@@ -1,17 +1,17 @@
 ---
-title: Essential Grammatical Elements of ggplot2
-author: normalct
+title: "Essential Grammatical Elements of ggplot2"
+author: "normalct"
 date: '2018-03-18'
 slug: essential-grammatical-elements-of-ggplot2
-categories:
-  - R
-tags:
-  - ggplot2
+tags: ggplot2
+categories: R
 ---
 
+# Essential Grammatical Elements of ggplot2
+
+## Grammar of graphics
 [Link to the ggplot2 tutorial: Grammar of graphics](https://youtu.be/uiTc55clwuA)
 
-### Grammar of graphics
 - Building blocks
 - For solid, creative, meaningful visualizations
 
@@ -25,7 +25,7 @@ Statistics | Representation of our data to aid understanding.
 Coordinates | The space on which the data will be plotted.
 Themes      | All non-data ink.
 
-### Diagram
+## Diagram
 
 Data        |*{variables of interest}*  ||||
 :------------|:--------:|:-------:|:--------:|:------:
@@ -37,8 +37,8 @@ Statistics  | binning | smoothing | descriptive | inferential ||
 Coordinates | cartesian | fixed | polar | limits ||
 Themes | non-data ink |||||
 
-### ggplot2 Layers 
-#### 1. Data
+## ggplot2 Layers 
+### Data
 Obviously, the first layer is data.
 Example data: Iris dataset 
 - by Edgar Anderson, popularized by R.A. Fisher.
@@ -50,7 +50,7 @@ head(iris)
 ```
 
 
-#### 2. Aesthetics
+### Aesthetics
 Second layer is Aesthetics which tells us which scale we shall map our data onto. This is the second main component of the grammar of graphics comes into play. On top of the grammatical elements, it's here that we establish our static mappings.
 
 In this Iris example, we are going to make a statterplot, so we're going to map the Sepal.Length to the x aesthetic, and Sepal.Width to the y aesthetic.
@@ -59,7 +59,7 @@ Species | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 --------|--------------|-------------|--------------|-------------
   .      | X            | Y           |              |
         
-#### 3. Geometries
+#### Geometries
 The third layer allows us to choose geometry. That means, how the plot will look.
 
 After we've established our three essential layers, we have enough instructions to make a basic scatterplot. 
@@ -74,7 +74,7 @@ ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
 
 It's pretty rough. To get a more meaningful and cleaner visualization, we'll have to use other layers. 
 
-#### 4. Facets
+#### Facets
 The next layer we'll use is the Facets, which dictates how to split up our plot. In this case, we want to make three separate plots, one for each of the three species under consideration.
 
 ```{r tidy=TRUE, message=FALSE, fig.height=3}
@@ -84,7 +84,7 @@ ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
     facet_grid(. ~ Species)
 ```
 
-#### 5. Statistics
+#### Statistics
 
 The Statistics layer can be used to calculate and add many different parameters. For example, here we've chosen to add a linear model to each of the three subplots.
 
@@ -96,7 +96,7 @@ ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
     stat_smooth(method = "lm", se = F, col = "red" )
 ```
 
-#### 6. Coordinates
+#### Coordinates
 
 Next comes the Coordinates layer which allows us to specify the precise dimensions of the plot.  Here, we've also cleaned up the labeling and the scaling of both the x and y axes.
 
@@ -116,7 +116,7 @@ ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
     coord_equal()
 ```
 
-#### 7. Theme
+#### Theme
 
 Finally, the Theme layer controls all the non-data ink on our plot, which allows us to get a nice-looking and meaningful and publication-quality plot directly in arm.
 
