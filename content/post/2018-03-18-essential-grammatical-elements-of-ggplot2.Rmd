@@ -1,0 +1,158 @@
+---
+title: Essential Grammatical Elements of ggplot2
+author: normalct
+date: '2018-03-18'
+slug: essential-grammatical-elements-of-ggplot2
+categories:
+  - R
+tags:
+  - ggplot2
+---
+
+[Link to the ggplot2 tutorial: Grammar of graphics](https://youtu.be/uiTc55clwuA)
+
+### Grammar of graphics
+- Building blocks
+- For solid, creative, meaningful visualizations
+
+Element    | Description
+---------- | --------------------------
+Data       | The data being plotted.
+Aesthetics | The scales onto which we map our data.
+Geometrics | The visual elements used for our data.
+Facets     | Plotting small elements.
+Statistics | Representation of our data to aid understanding.
+Coordinates | The space on which the data will be plotted.
+Themes      | All non-data ink.
+
+### Diagram
+
+Data        |*{variables of interest}*  ||||
+:------------|:--------:|:-------:|:--------:|:------:
+Aesthetics  | x-axis | colour|size   | alpha | line width|
+    .        | y-axis | fill|labels | shape | line type |
+Geometries  | point  | line | histogram | bar | boxplot |
+Facets      | columns |rows ||||
+Statistics  | binning | smoothing | descriptive | inferential ||
+Coordinates | cartesian | fixed | polar | limits ||
+Themes | non-data ink |||||
+
+### ggplot2 Layers 
+#### 1. Data
+Obviously, the first layer is data.
+Example data: Iris dataset 
+- by Edgar Anderson, popularized by R.A. Fisher.
+- 3 species of irises: setosa, versicolor, virginica.
+- 4 measurements were made: sepal length and width, petal length and width.
+
+```{r tidy=TRUE}
+head(iris)
+```
+
+
+#### 2. Aesthetics
+Second layer is Aesthetics which tells us which scale we shall map our data onto. This is the second main component of the grammar of graphics comes into play. On top of the grammatical elements, it's here that we establish our static mappings.
+
+In this Iris example, we are going to make a statterplot, so we're going to map the Sepal.Length to the x aesthetic, and Sepal.Width to the y aesthetic.
+
+Species | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
+--------|--------------|-------------|--------------|-------------
+  .      | X            | Y           |              |
+        
+#### 3. Geometries
+The third layer allows us to choose geometry. That means, how the plot will look.
+
+After we've established our three essential layers, we have enough instructions to make a basic scatterplot. 
+
+```{r tidy=TRUE, message=FALSE, fig.height=3, fig.width=3}
+library(ggplot2)
+library(dplyr)
+iris %>%
+ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
+    geom_jitter(alpha = 0.6)
+```
+
+It's pretty rough. To get a more meaningful and cleaner visualization, we'll have to use other layers. 
+
+#### 4. Facets
+The next layer we'll use is the Facets, which dictates how to split up our plot. In this case, we want to make three separate plots, one for each of the three species under consideration.
+
+```{r tidy=TRUE, message=FALSE, fig.height=3}
+iris %>%
+ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species)
+```
+
+#### 5. Statistics
+
+The Statistics layer can be used to calculate and add many different parameters. For example, here we've chosen to add a linear model to each of the three subplots.
+
+```{r tidy=TRUE, message=FALSE, fig.height=3}
+iris %>%
+ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species) +
+    stat_smooth(method = "lm", se = F, col = "red" )
+```
+
+#### 6. Coordinates
+
+Next comes the Coordinates layer which allows us to specify the precise dimensions of the plot.  Here, we've also cleaned up the labeling and the scaling of both the x and y axes.
+
+```{r tidy=TRUE, message=FALSE, height=3}
+levels(iris$Species) <- c("Setosa", "Versicolor", "Virginica")
+iris %>%
+ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species) +
+    stat_smooth(method = "lm", se = F, col = "red" ) +
+    scale_y_continuous("Sepal Width (cm)",
+                       limits = c(2,5),
+                       expand = c(0,0)) +
+    scale_x_continuous("Sepal Length (cm)",
+                       limits = c(4,8),
+                       expand = c(0,0)) +
+    coord_equal()
+```
+
+#### 7. Theme
+
+Finally, the Theme layer controls all the non-data ink on our plot, which allows us to get a nice-looking and meaningful and publication-quality plot directly in arm.
+
+
+```{r tidy=TRUE, message=FALSE, height=3}
+levels(iris$Species) <- c("Setosa", "Versicolor", "Virginica")
+library(grid)
+iris %>%
+ggplot( aes(x = Sepal.Length, y = Sepal.Width) ) +
+    geom_jitter(alpha = 0.6) +
+    facet_grid(. ~ Species) +
+    stat_smooth(method = "lm", se = F, col = "red" ) +
+    scale_y_continuous("Sepal Width (cm)",
+                       limits = c(2,5),
+                       expand = c(0,0)) +
+    scale_x_continuous("Sepal Length (cm)",
+                       limits = c(4,8),
+                       expand = c(0,0)) +
+    coord_equal() +
+    theme(panel.background = element_blank(),
+          plot.background = element_blank(),
+          legend.background = element_blank(),
+          legend.key = element_blank(),
+          strip.background = element_blank(),
+          axis.text = element_text(colour="black"),
+          axis.ticks = element_line(color = "black"),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.line = element_line(colour = "black"),
+          strip.text = element_blank(),
+          panel.spacing= unit(1, "lines")
+    )
+```
+
+
+
+
+
+
