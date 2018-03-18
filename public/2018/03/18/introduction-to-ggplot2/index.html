@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.37.1" />
+
+
+<title>Introduction to ggplot2 - A Hugo website</title>
+<meta property="og:title" content="Introduction to ggplot2 - A Hugo website">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Introduction to ggplot2</h1>
+
+    
+    <span class="article-date">2018/03/18</span>
+    
+
+    <div class="article-content">
+      <div id="datacamp-youtube-link" class="section level4">
+<h4><a href="https://youtu.be/YxKr2a-Y1WE">DataCamp Youtube Link</a></h4>
+</div>
+<div id="introduction-to-ggplot2" class="section level3">
+<h3>Introduction to ggplot2</h3>
+<pre class="r"><code>library(MASS)
+library(ggplot2)
+library(dplyr)
+### mammal data ###
+# head(mammals)</code></pre>
+<pre class="r"><code># first attempt to plot
+mammals %&gt;%
+    ggplot( aes(x=body, y=brain)) +
+    geom_point() +
+    stat_smooth(method = &quot;lm&quot;, col = &quot;red&quot;, se = FALSE)</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># fine tuning:
+# The above plot shows that there are two points that might be
+# outliers that excerts huge influence.
+# We might need to use the log transformation
+
+mammals %&gt;%
+    ggplot(aes(x=body, y=brain)) +
+    annotation_logticks() +
+    geom_point(alpha=0.6) +
+    scale_x_log10() +
+    scale_y_log10() +
+    stat_smooth(method = &quot;lm&quot;,  col = &quot;#C42126&quot;, se = TRUE, size=1)</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code># Further fine tuning
+mammals %&gt;%
+    ggplot( aes(x=body, y=brain) ) +
+    annotation_logticks() +
+    geom_point(alpha=0.6) +
+    coord_fixed(xlim = c(10^-3, 10^4), ylim = c(10^-1, 10^4)) +
+    scale_x_log10( expression(&quot;Body weight (log&quot;[&quot;10&quot;]*&quot;(Kg))&quot;,
+                             breaks = trans_breaks(&quot;log10&quot;, function(x) 10^x),
+                             labels = trans_format(&quot;log10&quot;, math_format(10^.x)) )) +
+    scale_y_log10( expression(&quot;Brain weight (log&quot;[&quot;10&quot;]*&quot;(Kg))&quot;,
+                   breaks = trans_breaks(&quot;log10&quot;, function(y) 10^x),
+                   labels = trans_format(&quot;log10&quot;, math_format(10^.x)) )
+    ) +
+    # stat_smooth(method = &quot;lm&quot;, col = &quot;#C42126&quot;, se = TRUE, size=1)
+    stat_smooth(method = &quot;lm&quot;, col = &quot;#C42126&quot;, se = TRUE, size=1) +
+    theme_classic()</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<pre class="r"><code>### Anscombe data ###
+# head(anscombe)
+
+anscombe %&gt;%
+    ggplot(aes(x=x1, y=y1)) +
+    geom_point() +
+    stat_smooth(method = &quot;lm&quot;, col = &quot;red&quot;, se = FALSE)</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>anscombe %&gt;%
+    ggplot(aes(x=x2, y=y2)) +
+    geom_point() +
+    stat_smooth(method = &quot;lm&quot;, col = &quot;red&quot;, se = FALSE)</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>anscombe %&gt;%
+    ggplot(aes(x=x3, y=y3)) +
+    geom_point() +
+    stat_smooth(method = &quot;lm&quot;, col = &quot;red&quot;, se = FALSE)</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code>anscombe %&gt;%
+    ggplot(aes(x=x4, y=y4)) +
+    geom_point() +
+    stat_smooth(method = &quot;lm&quot;, col = &quot;red&quot;, se = FALSE)</code></pre>
+<p><img src="/post/2018-03-18-introduction-to-ggplot2_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
